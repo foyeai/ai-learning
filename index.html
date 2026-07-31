@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 学习指南 - 零基础入门</title>
+<style>
+:root {
+  --bg: #FAF8F5; --dark: #2D2D2D; --teal: #1A5653; --coral: #E86A3A;
+  --white: #FFFFFF; --lt-teal: #D4EEEB; --gray: #666; --border: #E0DDD8;
+  --shadow: 0 2px 16px rgba(0,0,0,0.06); --radius: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--dark); }
+body { line-height:1.7; }
+
+/* Nav */
+nav { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 40px; display:flex; align-items:center; height:60px; gap:28px; }
+nav .logo { font-size:20px; font-weight:700; color:var(--teal); white-space:nowrap; }
+nav .logo span { color:var(--coral); }
+nav a { text-decoration:none; font-size:14px; color:var(--gray); font-weight:500; transition:color 0.2s; white-space:nowrap; }
+nav a:hover, nav a.active { color:var(--coral); }
+nav .cta { margin-left:auto; background:var(--coral); color:#fff; padding:8px 20px; border-radius:20px; font-weight:600; }
+nav .cta:hover { background:#d45e2e; color:#fff; }
+.menu-btn { display:none; background:none; border:none; font-size:24px; cursor:pointer; color:var(--teal); }
+
+/* Hero */
+.hero { padding:120px 40px 80px; text-align:center; background:linear-gradient(170deg, var(--teal) 0%, #0d3d3a 100%); color:#fff; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; width:500px; height:500px; border-radius:50%; background:rgba(255,255,255,0.03); top:-100px; right:-100px; }
+.hero::after { content:''; position:absolute; width:300px; height:300px; border-radius:50%; background:rgba(255,255,255,0.04); bottom:-60px; left:-80px; }
+.hero h1 { font-size:56px; margin-bottom:12px; position:relative; }
+.hero .sub { font-size:22px; color:var(--lt-teal); margin-bottom:8px; position:relative; }
+.hero .tag { font-size:16px; color:#AAD5D2; margin-bottom:32px; position:relative; }
+.hero .btn-row { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; position:relative; }
+.hero .btn { padding:14px 32px; border-radius:28px; font-size:16px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.hero .btn-primary { background:var(--coral); color:#fff; }
+.hero .btn-primary:hover { background:#d45e2e; transform:translateY(-2px); }
+.hero .btn-outline { border:2px solid var(--lt-teal); color:var(--lt-teal); }
+.hero .btn-outline:hover { background:rgba(255,255,255,0.1); transform:translateY(-2px); }
+
+/* Sections */
+section { padding:80px 40px; max-width:1100px; margin:0 auto; }
+section h2 { font-size:36px; color:var(--teal); margin-bottom:12px; }
+section .section-desc { font-size:17px; color:var(--gray); margin-bottom:40px; }
+
+/* Cards */
+.card-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; }
+.card { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow); transition:transform 0.2s; }
+.card:hover { transform:translateY(-2px); }
+.card-icon { font-size:32px; margin-bottom:12px; }
+.card h3 { font-size:18px; color:var(--teal); margin-bottom:8px; }
+.card p { font-size:14px; color:var(--gray); line-height:1.6; }
+
+/* Case Study */
+.case { background:#fff; border-left:4px solid var(--coral); border-radius:0 var(--radius) var(--radius) 0; padding:24px 28px; margin:24px 0; box-shadow:var(--shadow); }
+.case-label { font-size:13px; font-weight:700; color:var(--coral); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.case h4 { font-size:18px; color:var(--dark); margin-bottom:8px; }
+.case p { font-size:14px; color:var(--gray); }
+.case .steps { display:flex; gap:12px; margin-top:12px; flex-wrap:wrap; }
+.case .step { flex:1; min-width:140px; background:var(--lt-teal); padding:12px 16px; border-radius:8px; font-size:13px; color:var(--teal); text-align:center; }
+
+/* Exercise */
+.exercise { background:var(--lt-teal); border-radius:var(--radius); padding:24px 28px; margin:24px 0; }
+.exercise-label { font-size:13px; font-weight:700; color:var(--teal); margin-bottom:8px; }
+.exercise h4 { font-size:18px; color:var(--dark); margin-bottom:8px; }
+.exercise .task { font-size:14px; color:var(--dark); margin-bottom:8px; }
+.exercise .hint-btn { background:var(--teal); color:#fff; border:none; padding:8px 20px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; }
+.exercise .hint { display:none; margin-top:12px; padding:12px 16px; background:#fff; border-radius:8px; font-size:14px; color:var(--gray); }
+.exercise .hint.show { display:block; }
+
+/* Tool Tabs */
+.tool-tabs { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
+.tool-tab { padding:10px 20px; border-radius:20px; border:2px solid var(--border); background:none; cursor:pointer; font-size:14px; color:var(--gray); font-weight:500; transition:all 0.2s; }
+.tool-tab.active { background:var(--teal); border-color:var(--teal); color:#fff; }
+.tool-category { display:none; }
+.tool-category.active { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
+
+/* Timeline */
+.timeline { position:relative; padding-left:32px; }
+.timeline::before { content:''; position:absolute; left:12px; top:8px; bottom:8px; width:3px; background:var(--border); border-radius:2px; }
+.timeline-item { position:relative; margin-bottom:36px; }
+.timeline-dot { position:absolute; left:-26px; top:4px; width:18px; height:18px; border-radius:50%; border:3px solid; z-index:1; background:var(--bg); }
+.timeline-dot.t1 { border-color:var(--lt-teal); }
+.timeline-dot.t2 { border-color:#BBDBD8; }
+.timeline-dot.t3 { border-color:#99CCC8; }
+.timeline-dot.t4 { border-color:var(--teal); }
+.timeline-item h3 { font-size:20px; color:var(--teal); margin-bottom:4px; }
+.timeline-item .time-badge { font-size:12px; color:var(--coral); font-weight:600; margin-bottom:8px; }
+.timeline-item ul { list-style:none; }
+.timeline-item li { font-size:14px; color:var(--gray); margin-bottom:6px; padding-left:16px; position:relative; }
+.timeline-item li::before { content:'+'; position:absolute; left:0; color:var(--coral); font-weight:700; }
+
+/* FAQ */
+.faq-item { border:1px solid var(--border); border-radius:var(--radius); margin-bottom:12px; overflow:hidden; background:#fff; }
+.faq-q { padding:18px 24px; cursor:pointer; font-size:17px; font-weight:600; color:var(--dark); display:flex; justify-content:space-between; align-items:center; user-select:none; }
+.faq-q:hover { color:var(--teal); }
+.faq-q .arrow { font-size:20px; transition:transform 0.3s; color:var(--coral); }
+.faq-a { padding:0 24px; max-height:0; overflow:hidden; transition:all 0.3s; font-size:14px; color:var(--gray); }
+.faq-item.open .faq-a { padding:0 24px 18px; max-height:200px; }
+.faq-item.open .faq-q .arrow { transform:rotate(45deg); }
+
+/* Footer */
+footer { background:var(--teal); color:#fff; padding:48px 40px; text-align:center; }
+footer p { color:var(--lt-teal); font-size:14px; }
+footer .share-hint { margin-top:16px; font-size:13px; color:#88B5B2; }
+
+/* Responsive */
+@media (max-width:768px) {
+  nav { padding:0 16px; gap:12px; }
+  nav a:not(.logo):not(.cta) { display:none; }
+  .menu-btn { display:block; }
+  .hero { padding:100px 20px 60px; }
+  .hero h1 { font-size:36px; }
+  .hero .sub { font-size:18px; }
+  section { padding:48px 20px; }
+  section h2 { font-size:28px; }
+  .card-grid { grid-template-columns:1fr; }
+}
+
+/* Top button */
+#topBtn { position:fixed; bottom:24px; right:24px; width:44px; height:44px; border-radius:50%; background:var(--teal); color:#fff; border:none; cursor:pointer; font-size:20px; box-shadow:var(--shadow); display:none; z-index:999; }
+#topBtn.show { display:block; }
+
+/* Highlight box */
+.highlight { background:var(--lt-teal); padding:16px 24px; border-radius:var(--radius); text-align:center; font-weight:600; color:var(--teal); margin:20px 0; }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="logo">AI<span>学习指南</span></div>
+  <a href="#hero">首页</a>
+  <a href="#what">AI是什么</a>
+  <a href="#terms">术语速查</a>
+  <a href="#tools">工具全景</a>
+  <a href="#path">学习路径</a>
+  <a href="#faq">常见疑问</a>
+  <a href="#path" class="cta">开始学习</a>
+  <button class="menu-btn" onclick="document.getElementById('navMenu').classList.toggle('open')">&#9776;</button>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <h1>AI 学习指南</h1>
+  <div class="sub">零基础入门，从完全不懂到熟练使用</div>
+  <div class="tag">不写代码 · 不讲公式 · 案例实操 · 学了就能用</div>
+  <div class="btn-row">
+    <a href="#what" class="btn btn-primary">开始学习</a>
+    <a href="#tools" class="btn btn-outline">查看工具推荐</a>
+  </div>
+</section>
+
+<!-- Section 1: What is AI -->
+<section id="what">
+  <h2>第一部分：AI 到底是什么？</h2>
+  <p class="section-desc">一句话理解：AI 就是让电脑像人一样思考和处理事情的技术。它本质上是一个特别会"猜"的程序。</p>
+
+  <div class="card-grid">
+    <div class="card"><div class="card-icon">&#x1F9E0;</div><h3>不是魔法</h3><p>AI 是基于数据的工具，不是有自我意识的生物。它不会"觉醒"，只是统计规律用得好。</p></div>
+    <div class="card"><div class="card-icon">&#x26A0;</div><h3>不是完美的</h3><p>AI 会犯错，会一本正经地胡说八道（这叫"幻觉"）。永远保持一分怀疑。</p></div>
+    <div class="card"><div class="card-icon">&#x1F4F1;</div><h3>不是遥不可及</h3><p>你现在用的 Codex、手机语音助手、购物推荐，全都是 AI。</p></div>
+  </div>
+
+  <div class="case">
+    <div class="case-label">&#x1F4BC; 案例讲解</div>
+    <h4>案例：小张用 AI 写工作周报</h4>
+    <p>小张是销售，每周要写周报很头疼。她试了 ChatGPT：把本周拜访的客户名字和大致情况写进去，AI 帮她整理成结构化周报。原本要花 1 小时，现在 10 分钟搞定。</p>
+    <div class="steps">
+      <div class="step"><strong>1. 输入信息</strong><br>列出本周拜访的客户、成交情况</div>
+      <div class="step"><strong>2. AI 整理</strong><br>AI 自动归类、总结、格式化</div>
+      <div class="step"><strong>3. 审核修改</strong><br>检查数据是否准确，调整措辞</div>
+      <div class="step"><strong>4. 发送</strong><br>直接复制到邮件或钉钉</div>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-label">&#x270F; 动手练习</div>
+    <h4>试试看：跟 AI 说一句话</h4>
+    <p class="task">打开 ChatGPT 或 Codex，输入：「请用最通俗的话解释什么是人工智能，就像在跟一个 10 岁的小朋友说话」</p>
+    <button class="hint-btn" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.textContent.includes('显示')?'&#x25B2; 收起参考':'&#x25BC; 显示参考回答'">&#x25BC; 显示参考回答</button>
+    <div class="hint">AI 可能会这样回答：「人工智能就像教电脑学习。比如你给电脑看很多很多猫的图片，告诉它这是猫，那是狗。电脑看多了以后，给它一张新图片它就能自己判断这是猫还是狗了。」</div>
+  </div>
+</section>
+
+<!-- Section 2: Terminology -->
+<section id="terms">
+  <h2>第二部分：常见术语速查表</h2>
+  <p class="section-desc">这些词你每天都能听到，每个都用大白话解释，再也不怕听不懂。</p>
+
+  <h3 style="color:var(--teal);margin-bottom:16px;">关于 AI 的"大脑"</h3>
+  <div class="card-grid">
+    <div class="card"><h3>大模型 / LLM</h3><p>一个读过海量文字的程序。因为读得够多，所以能聊天、写作、翻译、写代码。<br><span style="color:var(--coral);">比喻：一本读过整个图书馆的书</span></p></div>
+    <div class="card"><h3>GPT</h3><p>OpenAI 的聊天 AI 系列名，不用记全称。ChatGPT 背后就是它。<br><span style="color:var(--coral);">比喻：ChatGPT 的大脑型号</span></p></div>
+    <div class="card"><h3>参数</h3><p>AI 的"脑细胞"数量。越多越聪明，顶级模型有上万亿个。<br><span style="color:var(--coral);">比喻：脑细胞越多，智商越高</span></p></div>
+    <div class="card"><h3>训练</h3><p>让 AI "读书学习"的过程。把海量文字图片喂给它，让它从中找规律。<br><span style="color:var(--coral);">比喻：AI 的九年义务教育</span></p></div>
+    <div class="card"><h3>推理</h3><p>AI 学成后用学到的知识回答问题的过程。<br><span style="color:var(--coral);">比喻：考试——用学过的知识解题</span></p></div>
+    <div class="card"><h3>幻觉</h3><p>AI 一本正经地胡说八道，猜错了还特别自信。<br><span style="color:var(--coral);">比喻：AI 也会不懂装懂</span></p></div>
+  </div>
+
+  <h3 style="color:var(--coral);margin:32px 0 16px;">关于"玩法"</h3>
+  <div class="card-grid">
+    <div class="card"><h3>Prompt / 提示词</h3><p>你跟 AI 说的话。说得越清楚，回答越好。就像给实习生布置任务：说清楚比说笼统管用 10 倍。</p></div>
+    <div class="card"><h3>Agent / 智能体</h3><p>能自己做主干活的 AI。告诉它目标，它自己想办法完成。Codex 就是一个 Agent。</p></div>
+    <div class="card"><h3>API</h3><p>程序的"插座"——让不同软件能互相调用。你不用懂技术细节。</p></div>
+    <div class="card"><h3>开源 vs 闭源</h3><p>开源 = 菜谱公开可改。闭源 = 配方保密只能用。ChatGPT 是闭源的。</p></div>
+  </div>
+
+  <div class="case">
+    <div class="case-label">&#x1F4BC; 案例讲解</div>
+    <h4>案例：写好提示词的差距有多大</h4>
+    <p><strong>模糊的提示词：</strong>"帮我写个文案"→ AI 不知道写什么，输出很空泛</p>
+    <p style="margin-top:8px;"><strong>清晰的提示词：</strong>"我是一家咖啡馆老板，想在朋友圈宣传新品桂花拿铁。目标客户是 25-35 岁女性。请写 3 条文案，每条 50 字以内，语气温暖文艺。"→ AI 输出精准可用</p>
+    <p style="margin-top:8px;color:var(--coral);font-weight:600;">差距：同样是 AI，不同问法，结果天差地别。这就是提示词的价值。</p>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-label">&#x270F; 动手练习</div>
+    <h4>试试看：对比两种提问方式</h4>
+    <p class="task">先用模糊的方式问 ChatGPT：「推荐一本好书」。再用清晰的方式问：「我最近对心理学感兴趣，是初学者，请推荐 3 本入门读物，每本用一句话说明推荐理由」。感受两次回答的差别。</p>
+    <button class="hint-btn" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.textContent.includes('显示')?'&#x25B2; 收起提示':'&#x25BC; 显示提示'">&#x25BC; 显示提示</button>
+    <div class="hint">模糊提问的回答可能很泛——"推荐《活着》《三体》"跟你的需求无关。清晰提问的回答会精准匹配心理学领域，附带作者和理由。这就是"说清楚"的威力。</div>
+  </div>
+</section>
+
+<!-- Section 3: Tools -->
+<section id="tools">
+  <h2>第三部分：主流 AI 工具全景图</h2>
+  <p class="section-desc">这么多 AI 工具，每个到底是干嘛的？按分类来看，一目了然。</p>
+
+  <div class="tool-tabs">
+    <button class="tool-tab active" onclick="switchTab('chat')">&#x1F4AC; 聊天对话</button>
+    <button class="tool-tab" onclick="switchTab('image')">&#x1F3A8; 图像生成</button>
+    <button class="tool-tab" onclick="switchTab('video')">&#x1F3AC; 视频音频</button>
+    <button class="tool-tab" onclick="switchTab('office')">&#x1F4CA; 办公提效</button>
+  </div>
+
+  <div class="tool-category active" id="cat-chat">
+    <div class="card"><h3>ChatGPT</h3><p>AI 聊天鼻祖，功能最全面。能写能聊能搜能画图。<br><span style="color:var(--coral);">适合：所有人</span></p></div>
+    <div class="card"><h3>Claude</h3><p>擅长长文写作和深度思考，文风更自然。<br><span style="color:var(--coral);">适合：写长文的人</span></p></div>
+    <div class="card"><h3>Gemini</h3><p>Google 出品，跟 Gmail/Docs 深度整合。<br><span style="color:var(--coral);">适合：Google 用户</span></p></div>
+    <div class="card"><h3>DeepSeek</h3><p>国产黑马，性价比高，部分功能免费。<br><span style="color:var(--coral);">适合：国内用户</span></p></div>
+    <div class="card"><h3>Kimi</h3><p>处理超长文本的专家，一次能读一整本书。<br><span style="color:var(--coral);">适合：读长文的人</span></p></div>
+    <div class="card"><h3>豆包</h3><p>字节跳动出品，跟抖音生态打通。<br><span style="color:var(--coral);">适合：国内普通用户</span></p></div>
+    <div class="card"><h3>通义千问</h3><p>阿里出品，跟钉钉和淘宝打通。<br><span style="color:var(--coral);">适合：电商/办公用户</span></p></div>
+  </div>
+  <div class="tool-category" id="cat-image">
+    <div class="card"><h3>Midjourney</h3><p>画质最好，艺术感强。<br><span style="color:var(--coral);">适合：设计师</span></p></div>
+    <div class="card"><h3>DALL-E</h3><p>ChatGPT 内置画图，方便快捷。<br><span style="color:var(--coral);">适合：ChatGPT 用户</span></p></div>
+    <div class="card"><h3>Stable Diffusion</h3><p>开源，可自己部署，灵活度高。<br><span style="color:var(--coral);">适合：技术爱好者</span></p></div>
+    <div class="card"><h3>即梦</h3><p>字节国产画图/视频工具。<br><span style="color:var(--coral);">适合：国内用户</span></p></div>
+  </div>
+  <div class="tool-category" id="cat-video">
+    <div class="card"><h3>Sora</h3><p>OpenAI 出品，文字直接生成视频。</p></div>
+    <div class="card"><h3>Runway</h3><p>专业的 AI 视频编辑和生成工具。</p></div>
+    <div class="card"><h3>剪映 AI</h3><p>剪映里的 AI 功能，自动剪辑、字幕生成。</p></div>
+    <div class="card"><h3>Suno / Udio</h3><p>输入文字，AI 帮你写歌+编曲+演唱。</p></div>
+  </div>
+  <div class="tool-category" id="cat-office">
+    <div class="card"><h3>Notion AI</h3><p>笔记里的 AI，帮你写文档做总结。</p></div>
+    <div class="card"><h3>MS Copilot</h3><p>Word/Excel/PPT 里的 AI 助手。</p></div>
+    <div class="card"><h3>Gamma</h3><p>一键生成 PPT、文档和网页。</p></div>
+    <div class="card"><h3>Perplexity</h3><p>AI 搜索引擎，对话式搜东西，标注来源。</p></div>
+    <div class="card"><h3>Codex</h3><p>不仅能聊天，还能直接帮你做事、操作电脑。</p></div>
+  </div>
+
+  <div class="case">
+    <div class="case-label">&#x1F4BC; 案例讲解</div>
+    <h4>案例：用 AI 工具组合完成一个项目</h4>
+    <p>小李要做一份新产品推广方案。他先用 <strong>ChatGPT</strong> 生成文案大纲和核心卖点，然后用 <strong>Midjourney</strong> 生成产品配图，最后用 <strong>Gamma</strong> 一键把文案+图片生成精美 PPT。原本要两天的工作，半天搞定。</p>
+    <div class="steps">
+      <div class="step"><strong>ChatGPT</strong><br>写文案大纲</div>
+      <div class="step"><strong>Midjourney</strong><br>生成配图</div>
+      <div class="step"><strong>Gamma</strong><br>合成 PPT</div>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-label">&#x270F; 动手练习</div>
+    <h4>试试看：找到适合你的第一个 AI 工具</h4>
+    <p class="task">根据你的需求选择一个工具并注册试用。如果你经常写文档，选 ChatGPT；如果你需要画图，选即梦（国内免费）；如果你需要搜索，选 Perplexity。用一次，感受一下。</p>
+  </div>
+</section>
+
+<!-- Section 4: Learning Path -->
+<section id="path">
+  <h2>第四部分：循序渐进学习路径</h2>
+  <p class="section-desc">从今天开始，用 8 周时间，从小白变成 AI 熟手。</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot t1"></div>
+      <span class="time-badge">第 1-2 周</span>
+      <h3>第一阶段：上手体验</h3>
+      <p style="font-size:14px;color:var(--gray);margin-bottom:8px;">目标：消除陌生感，建立直觉</p>
+      <ul>
+        <li>注册并使用 ChatGPT（或 DeepSeek / Kimi），随便聊聊</li>
+        <li>让 AI 帮你做一件实际的事：写邮件、总结文章</li>
+        <li>对比同一个问题用不同问法得到的答案</li>
+        <li>用即梦或 Midjourney 试试 AI 画图</li>
+      </ul>
+      <div class="highlight">核心：别怕犯错，随便玩。AI 永远不会不耐烦。</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot t2"></div>
+      <span class="time-badge">第 3-4 周</span>
+      <h3>第二阶段：日常融入</h3>
+      <p style="font-size:14px;color:var(--gray);margin-bottom:8px;">目标：让 AI 成为工作生活的常态工具</p>
+      <ul>
+        <li>每天早上让 AI 帮你规划待办事项</li>
+        <li>阅读长文章前先让 AI 做摘要</li>
+        <li>写报告或邮件时让 AI 打草稿</li>
+        <li>学习新知识时让 AI 用简单的话解释</li>
+        <li>试试 AI 搜索替代传统搜索</li>
+      </ul>
+      <div class="highlight">养成习惯：遇到不懂的，先问 AI；遇到要写的，先让 AI 列提纲。</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot t3"></div>
+      <span class="time-badge">第 5-8 周</span>
+      <h3>第三阶段：深入理解</h3>
+      <p style="font-size:14px;color:var(--gray);margin-bottom:8px;">目标：形成自己的判断力</p>
+      <ul>
+        <li>了解"幻觉"——亲自测试 AI 犯错</li>
+        <li>学会写好提示词，学 3-5 个常用技巧</li>
+        <li>了解 AI 的局限：不懂真实世界、会犯错</li>
+        <li>组合使用多个工具完成一个完整项目</li>
+        <li>关注 2-3 个 AI 资讯来源</li>
+      </ul>
+      <div class="highlight">关键转折：从"用工具"到"懂工具"，形成自己的 AI 观。</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot t4"></div>
+      <span class="time-badge">长期</span>
+      <h3>第四阶段：持续跟进</h3>
+      <p style="font-size:14px;color:var(--gray);margin-bottom:8px;">目标：不被时代抛下</p>
+      <ul>
+        <li>每周花 15 分钟浏览 AI 新闻</li>
+        <li>新工具出现时先想"能帮我做什么"</li>
+        <li>主动思考哪些工作可以交给 AI</li>
+        <li>试试 Codex 这类 Agent 工具</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case-label">&#x1F4BC; 案例讲解</div>
+    <h4>案例：一个行政人员 8 周的 AI 学习之旅</h4>
+    <p>王姐是公司行政，8 周前完全没接触过 AI。第 1-2 周她用 ChatGPT 写通知和会议纪要；第 3-4 周开始用 AI 做日程安排和邮件摘要；第 5-8 周她能组合 DeepSeek（长文档分析）+ Perplexity（资料搜索）+ ChatGPT（文案撰写）完成季度汇报材料。现在她每天节省约 2 小时。</p>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-label">&#x270F; 动手练习</div>
+    <h4>试试看：规划你的第一周</h4>
+    <p class="task">拿出一张纸（或打开记事本），写下你工作中最花时间的 3 件事。然后问自己：这件事 AI 能帮忙吗？选一件你觉得最有把握的，今天就试试。</p>
+  </div>
+</section>
+
+<!-- Section 5: Resources -->
+<section id="resources">
+  <h2>第五部分：推荐资源</h2>
+  <p class="section-desc">靠谱的资讯来源和入门读物，帮你持续学习。</p>
+
+  <h3 style="color:var(--teal);margin-bottom:16px;">资讯来源</h3>
+  <div class="card-grid">
+    <div class="card"><h3>量子位</h3><p>国内最好的 AI 资讯平台，通俗易懂。微信公众号可直接关注。</p></div>
+    <div class="card"><h3>机器之心</h3><p>偏技术但质量高，有"白话科普"栏目适合入门。</p></div>
+    <div class="card"><h3>少数派</h3><p>专注效率工具测评，AI 工具评测和教程很多。</p></div>
+    <div class="card"><h3>The Rundown AI</h3><p>每天一封英文邮件总结全球 AI 大事，适合学英语+学 AI。</p></div>
+  </div>
+
+  <h3 style="color:var(--coral);margin:32px 0 16px;">入门读物</h3>
+  <div class="card-grid">
+    <div class="card"><h3>《人工智能简史》</h3><p>了解 AI 怎么从科幻变成现实的，有故事性，不枯燥。</p></div>
+    <div class="card"><h3>《ChatGPT 从入门到精通》</h3><p>这类书很多，挑豆瓣评分高的即可，快速上手。</p></div>
+    <div class="card"><h3>Bilibili 视频教程</h3><p>搜"AI 入门教程"，看播放量最高的几个视频，直观易懂。</p></div>
+  </div>
+
+  <div class="exercise">
+    <div class="exercise-label">&#x270F; 动手练习</div>
+    <h4>试试看：建立你的 AI 信息流</h4>
+    <p class="task">今天就做两件事：1) 微信关注"量子位"公众号；2) 在 Bilibili 搜"ChatGPT 入门教程"，收藏一个你觉得讲得最好的视频。每天花 10 分钟刷一刷。</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <h2>常见疑问</h2>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">AI 会取代我的工作吗？<span class="arrow">+</span></div>
+    <div class="faq-a">不会。但会用 AI 的人可能会取代不会用的人。这跟当年电力普及一样——电没有让人失业，但不掌握电力工具的人确实会被边缘化。现在学 AI，就是在给自己"充电"。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">需要学编程才能用好 AI 吗？<span class="arrow">+</span></div>
+    <div class="faq-a">完全不需要。ChatGPT 这类工具就是为所有人设计的。就像不需要会造手机就能用手机一样。会用自然语言交流就足够了。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">免费版够用吗？<span class="arrow">+</span></div>
+    <div class="faq-a">入门完全够用。ChatGPT 免费版、DeepSeek、Kimi 的免费额度都很充足。等你真正发现有付费需求时（比如需要更高频率使用、更长的上下文），再考虑升级。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">工具这么多，从哪个开始？<span class="arrow">+</span></div>
+    <div class="faq-a">一个就够了。先选 ChatGPT（或者 DeepSeek/Kimi），用熟它。不要贪多。工具是为你服务的，不要成为工具的奴隶。</div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p style="font-size:22px;font-weight:700;">学习 AI 最好的方式——就是多跟 AI 相处。</p>
+  <p style="margin-top:8px;">你正在用的 Codex 本身就是 AI 能力的最佳展示。开始你的 AI 之旅吧！</p>
+  <div class="share-hint">想分享这个页面？直接把这个 HTML 文件发给朋友，浏览器就能打开。</div>
+</footer>
+
+<button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#x2191;</button>
+
+<script>
+// Tool tab switching
+function switchTab(cat) {
+  document.querySelectorAll('.tool-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tool-category').forEach(c => c.classList.remove('active'));
+  document.getElementById('cat-'+cat).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Back to top button
+window.addEventListener('scroll', () => {
+  document.getElementById('topBtn').classList.toggle('show', window.scrollY > 400);
+});
+
+// Active nav link
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+
+</body>
+</html>
